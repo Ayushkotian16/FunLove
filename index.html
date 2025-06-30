@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>💖 Special Surprise 💖</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ffdde1, #ffc2d1);
+      overflow: hidden;
+      text-align: center;
+    }
+    .hidden { display: none; }
+    .container {
+      padding: 50px 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #d6336c;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      margin: 20px 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #ff69b4;
+      color: white;
+      transition: transform 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    #noBtn {
+      position: absolute;
+      background-color: #bbb;
+      color: black;
+    }
+    #questionButtons {
+      margin-top: 20px;
+    }
+    #questionButtons button {
+      margin: 0 10px;
+    }
+    #finalMessageScreen {
+      display: none;
+      padding: 50px 20px;
+      max-width: 600px;
+      margin: auto;
+      color: #d6336c;
+    }
+    img {
+      width: 250px;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 5s linear infinite;
+    }
+    .heart::before, .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
+    @keyframes float {
+      0% { bottom: -20px; opacity: 0; }
+      50% { opacity: 1; }
+      100% { bottom: 100%; opacity: 0; }
+    }
+    #countdown { font-size: 48px; margin: 20px 0; color: #e60073; }
+    #music {
+      /* display: none; */ /* Removed to allow audio playback */
+    }
+  </style>
+</head>
+<body>
+
+<!-- ❤️ Floating Hearts -->
+<script>
+  for (let i = 0; i < 25; i++) {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+    document.body.appendChild(heart);
+  }
+</script>
+
+<!-- 🔊 Background Music -->
+<audio id="music" loop>
+  <source src="https://docs.google.com/uc?export=download&id=1N2YSPu9cCqzo7YacSHcrmyjIvFHQImkI" type="audio/mp3">
+</audio>
+
+<button id="playMusicBtn" style="display:none; padding: 10px 20px; font-size: 16px; margin-top: 20px;">Play Music</button>
+
+<!-- 🖤 Fake Loading Screen -->
+<div id="loading" class="container">
+  <h1>Hello <span id="nickname"></span> 💖</h1>
+  <p>Loading something special just for you...</p>
+  <img src="https://media.giphy.com/media/XIqCQx02E1U9W/giphy.gif" alt="Loading Teddy">
+</div>
+
+<!-- ⏱ Countdown -->
+<div id="countdownScreen" class="hidden container">
+  <h2>Get ready in...</h2>
+  <div id="countdown">5</div>
+</div>
+
+<!-- 💬 Questions -->
+<div id="questionScreen" class="hidden container">
+  <h2 id="questionText">Question 1</h2>
+  <img id="questionImg" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExazNydXdyOGphZ3kwMXZiODFjcmo1anp0bzBscWxkcHExOW43OTRnMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/LSpQ1mwLL59EP10ddE/giphy.gif" alt="Question Gif">
+  <div id="questionButtons">
+    <button id="yesQuestionBtn">Yes 😄</button>
+    <button id="noQuestionBtn">No 🙁</button>
+  </div>
+</div>
+
+<!-- 💌 Proposal -->
+<div id="proposalScreen" class="hidden container">
+  <h1>Will you be my girlfriend? 💌</h1>
+  <div>
+    <button id="yesProposalBtn">Yes 💗</button>
+    <button id="noProposalBtn">No 🙈</button>
+  </div>
+</div>
+
+  <!-- 😢 Sad Message -->
+  <div id="sadMessageScreen" class="hidden container">
+    <h1 id="sadMessageTitle">Oh no! 😢</h1>
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHF0amJ4dHA2enhkZjRsZ2c4cjk5bDN5aG5hY3RvdmpmcXc5ejQ3NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/9Y5BbDSkSTiY8/giphy.gif" alt="Sad Animation">
+    <h2 id="sadMessageText">That's a bit sad... But let's continue! 💔</h2>
+  </div>
+  
+  <!-- 🎉 Surprise Message -->
+  <div id="surpriseMessageScreen" class="hidden container">
+    <h1>Surprise! 😲</h1>
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXJmYXpjZXd6NnNhZmgzZHozcXFhYm8xYndjZGZ6ZzJydHE0cjB5aiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/P3CZolxd8DeRy4g4fM/giphy.gif" alt="Hearts">
+    <h2>This is so surprising and shocking! 💖</h2>
+  </div>
+  
+  <!-- 🎉 Fun Message -->
+  <div id="funMessageScreen" class="hidden container">
+    <h1>This is just for fun! 🎉</h1>
+      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGZ3bjBtbTI4bWRmbTdmcWN2ZHBlNWp5Yml0OXJtdnpyZWVoaGM5aSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/LBgmyXjkls7gZ3ReTp/giphy.gif" alt="Lovely Hugging">
+    <p>Hope you enjoyed this little surprise! 💖</p>
+  </div>
+  
+  <!-- 🎉 Result -->
+  <div id="resultScreen" class="hidden container">
+    <h1>You said YES! 😍</h1>
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXJmYXpjZXd6NnNhZmgzZHozcXFhYm8xYndjZGZ6ZzJydHE0cjB5aiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/P3CZolxd8DeRy4g4fM/giphy.gif" alt="Hearts">
+    <h2>This is the happiest moment of my life!</h2>
+  </div>
+
+<script>
+  const nickname = "My Dear Friend.."; // 🔧 Customize her nickname here
+  document.getElementById("nickname").textContent = nickname;
+
+  const loading = document.getElementById("loading");
+  const countdownScreen = document.getElementById("countdownScreen");
+  const questionScreen = document.getElementById("questionScreen");
+  const finalMessageScreen = document.getElementById("finalMessageScreen");
+  const resultScreen = document.getElementById("resultScreen");
+
+  const countdownText = document.getElementById("countdown");
+  const questionText = document.getElementById("questionText");
+  const questionImg = document.getElementById("questionImg");
+  const yesQuestionBtn = document.getElementById("yesQuestionBtn");
+  const noQuestionBtn = document.getElementById("noQuestionBtn");
+  const funButton = document.getElementById("funButton");
+
+  const questions = [
+    {
+      text: "Do you like surprises? 🎁",
+      img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExazNydXdyOGphZ3kwMXZiODFjcmo1anp0bzBscWxkcHExOW43OTRnMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/LSpQ1mwLL59EP10ddE/giphy.gif"
+    },
+    {
+      text: "Do you like spending time with me? 😊",
+      img: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OGZjazAxN21sMXdwaTNqNjVjaGFremhxYTMxMDNpdjFhbGg1ajA3cCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5j0hUkNbNLEW3zh1TW/giphy.gif"
+    },
+    {
+      text: "Are you ready for the final question? 🥺",
+      img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmlsdGtldnNubHNhZzdrend5Nmw1NzBqaTFwZHM0cW9ra21wZzNoZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/DffShiJ47fPqM/giphy.gif"
+    }
+  ];
+
+  let currentQ = 0;
+
+  // ⏱ Fake loading then countdown
+  setTimeout(() => {
+    loading.classList.add("hidden");
+    countdownScreen.classList.remove("hidden");
+    let count = 5;
+    const interval = setInterval(() => {
+      count--;
+      countdownText.textContent = count;
+      if (count === 0) {
+        clearInterval(interval);
+        countdownScreen.classList.add("hidden");
+        questionScreen.classList.remove("hidden");
+        // Removed music play here to start after all questions
+        showQuestion();
+      }
+    }, 1000);
+  }, 3500);
+
+  // 👉 Show next question on Yes or No click
+  function nextQuestion() {
+    currentQ++;
+    if (currentQ < questions.length) {
+      showQuestion();
+    } else {
+      questionScreen.classList.add("hidden");
+      proposalScreen.classList.remove("hidden");
+      document.getElementById("music").play(); // Play music after all questions
+    }
+  }
+
+  yesQuestionBtn.onclick = nextQuestion;
+  
+  const sadMessageScreen = document.getElementById("sadMessageScreen");
+  const proposalScreen = document.getElementById("proposalScreen");
+  const yesProposalBtn = document.getElementById("yesProposalBtn");
+  const noProposalBtn = document.getElementById("noProposalBtn");
+  const surpriseMessageScreen = document.getElementById("surpriseMessageScreen");
+  const funMessageScreen = document.getElementById("funMessageScreen");
+  const music = document.getElementById("music");
+  const playMusicBtn = document.getElementById("playMusicBtn");
+
+  function tryPlayMusic() {
+    music.play().then(() => {
+      playMusicBtn.style.display = "none";
+    }).catch((error) => {
+      console.log("Music play failed:", error);
+      playMusicBtn.style.display = "inline-block";
+    });
+  }
+
+  noQuestionBtn.onclick = () => {
+    tryPlayMusic();
+    questionScreen.classList.add("hidden");
+    sadMessageScreen.classList.remove("hidden");
+    const sadMessageTitle = document.getElementById("sadMessageTitle");
+    const sadMessageText = document.getElementById("sadMessageText");
+    if (currentQ === 0) {
+      // First question no click: show sad message and end
+      sadMessageTitle.textContent = "It's okay! 😢";
+      sadMessageText.textContent = "I understand. No worries, this is the end. 💔";
+      return;
+    } else if (currentQ === questions.length - 1) {
+      // Last question no click: show different sad message and end
+      sadMessageTitle.textContent = "It's okay! 😢";
+      sadMessageText.textContent = "I understand. No worries, this is the end. 💔";
+      return;
+    } else {
+      sadMessageTitle.textContent = "Oh no! 😢";
+      sadMessageText.textContent = "That's a bit sad... But let's continue! 💔";
+    }
+    setTimeout(() => {
+      sadMessageScreen.classList.add("hidden");
+      questionScreen.classList.remove("hidden");
+      nextQuestion();
+    }, 3000);
+  };
+
+  noProposalBtn.onmouseover = () => {
+    noProposalBtn.style.position = 'absolute';
+    noProposalBtn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+    noProposalBtn.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+  };
+  noProposalBtn.onclick = (e) => {
+    e.preventDefault();
+  };
+
+  yesProposalBtn.onclick = () => {
+    tryPlayMusic();
+    proposalScreen.classList.add("hidden");
+    surpriseMessageScreen.classList.remove("hidden");
+    setTimeout(() => {
+      surpriseMessageScreen.classList.add("hidden");
+      funMessageScreen.classList.remove("hidden");
+    }, 4000);
+  };
+
+  function showQuestion() {
+    questionText.textContent = questions[currentQ].text;
+    questionImg.src = questions[currentQ].img;
+  }
+</script>
+
+</body>
+</html>
